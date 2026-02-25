@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="header">
+    <h2>My Todos</h2>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+
+  <div class="add-todo">
+    <input type="text" placeholder="Add a new todo..." [(ngModel)]="newTodoTitle" (keyup.enter)="createTodo()" />
+    <button (click)="createTodo()">Add</button>
+  </div>
+
+  <div class="todo-list">
+    <div *ngFor="let todo of todos" class="todo-item" [class.completed]="todo.completed">
+      <div *ngIf="editingTodo?.id !== todo.id" class="todo-content">
+        <span>{{ todo.title }}</span>
+        <div class="actions">
+          <button *ngIf="!todo.completed" (click)="completeTodo(todo)" class="complete-btn">✓</button>
+          <button (click)="startEdit(todo)" class="edit-btn">✎</button>
+          <button (click)="deleteTodo(todo.id)" class="delete-btn">✕</button>
+        </div>
+      </div>
+      <div *ngIf="editingTodo?.id === todo.id" class="todo-content">
+        <input type="text" [(ngModel)]="editTitle" (keyup.enter)="saveEdit()" />
+        <div class="actions">
+          <button (click)="saveEdit()" class="complete-btn">Save</button>
+          <button (click)="editingTodo = null" class="delete-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="todos.length === 0" class="empty">No todos yet. Add one above!</div>
+  </div>
+</div>
