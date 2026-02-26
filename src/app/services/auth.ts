@@ -32,10 +32,21 @@ export class AuthService {
   }
 
   logout(): void {
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
-  localStorage.removeItem('role');
-  this.router.navigate(['/login']);
+  this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
+    next: () => {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('role');
+      this.router.navigate(['/login']);
+    },
+    error: () => {
+      // Even if the server call fails, clear local storage and redirect
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('role');
+      this.router.navigate(['/login']);
+    }
+  });
 }
 
   isLoggedIn(): boolean {
