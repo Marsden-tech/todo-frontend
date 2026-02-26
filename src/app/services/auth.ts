@@ -46,7 +46,8 @@ export class AuthService {
   }
 
   private saveTokens(response: AuthResponse): void {
-    localStorage.setItem('accessToken', response.accessToken);
-    localStorage.setItem('refreshToken', response.refreshToken);
-  }
+  localStorage.setItem('accessToken', response.accessToken);
+  localStorage.setItem('refreshToken', response.refreshToken);
+  localStorage.setItem('role', response.role);
+}
 }

@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="header">
+    <h2>Admin Panel</h2>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+
+  <div class="tabs">
+    <button [class.active]="activeTab === 'users'" (click)="activeTab = 'users'">Users</button>
+    <button [class.active]="activeTab === 'todos'" (click)="activeTab = 'todos'">Todos</button>
+  </div>
+
+  <!-- Users Tab -->
+  <div *ngIf="activeTab === 'users'">
+    <div *ngFor="let user of users" class="card">
+      <div class="card-content">
+        <div>
+          <p class="title">{{ user.username }}</p>
+          <p class="subtitle">{{ user.email }}</p>
+          <span class="role" [class.admin]="user.role === 'ADMIN'">{{ user.role }}</span>
+        </div>
+        <button class="delete-btn" (click)="deleteUser(user.id)">✕</button>
+      </div>
+    </div>
+    <p *ngIf="users.length === 0" class="empty">No users found.</p>
+  </div>
+
+  <!-- Todos Tab -->
+  <div *ngIf="activeTab === 'todos'">
+    <div *ngFor="let todo of todos" class="card">
+      <div class="card-content">
+        <div>
+          <p class="title" [class.completed]="todo.completed">{{ todo.title }}</p>
+          <span class="status" [class.done]="todo.completed">
+            {{ todo.completed ? 'Completed' : 'Pending' }}
+          </span>
+        </div>
+        <button class="delete-btn" (click)="deleteTodo(todo.id)">✕</button>
+      </div>
+    </div>
+    <p *ngIf="todos.length === 0" class="empty">No todos found.</p>
+  </div>
+</div>
