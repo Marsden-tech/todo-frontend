@@ -32,10 +32,11 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    this.router.navigate(['/login']);
-  }
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('role');
+  this.router.navigate(['/login']);
+}
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('accessToken');
