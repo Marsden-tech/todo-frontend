@@ -20,9 +20,15 @@ export class RegisterComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   register(): void {
-    this.authService.register({ username: this.username, password: this.password, email: this.email }).subscribe({
-      next: () => this.router.navigate(['/todos']),
-      error: () => this.error = 'Registration failed. Please try again.'
-    });
-  }
+  this.authService.register({ username: this.username, password: this.password, email: this.email }).subscribe({
+    next: (response) => {
+      if (response.role === 'ADMIN') {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/todos']);
+      }
+    },
+    error: () => this.error = 'Registration failed. Please try again.'
+  });
+}
 }

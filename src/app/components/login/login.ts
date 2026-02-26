@@ -19,9 +19,16 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   login(): void {
-    this.authService.login({ username: this.username, password: this.password }).subscribe({
-      next: () => this.router.navigate(['/todos']),
-      error: () => this.error = 'Invalid username or password'
-    });
-  }
+  this.authService.login({ username: this.username, password: this.password }).subscribe({
+    next: (response) => {
+      console.log('Role received:', response.role);
+      if (response.role === 'ADMIN') {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/todos']);
+      }
+    },
+    error: () => this.error = 'Invalid username or password'
+  });
+}
 }
