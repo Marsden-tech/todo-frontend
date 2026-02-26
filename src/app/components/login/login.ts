@@ -21,7 +21,6 @@ export class LoginComponent {
   login(): void {
   this.authService.login({ username: this.username, password: this.password }).subscribe({
     next: (response) => {
-      console.log('Role received:', response.role);
       if (response.role === 'ADMIN') {
         this.router.navigate(['/admin']);
       } else {
