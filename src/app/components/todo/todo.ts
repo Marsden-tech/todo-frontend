@@ -17,6 +17,8 @@ export class TodoComponent implements OnInit {
   newTodoTitle = '';
   editingTodo: Todo | null = null;
   editTitle = '';
+  isLoading = false;
+  error = '';
 
   constructor(private todoService: TodoService, private authService: AuthService) {}
 
@@ -25,9 +27,16 @@ export class TodoComponent implements OnInit {
   }
 
   loadTodos(): void {
+    this.isLoading = true;
     this.todoService.getAll().subscribe({
-      next: (todos) => this.todos = todos,
-      error: (err) => console.error(err)
+      next: (todos) => {
+        this.todos = todos;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.error = 'Failed to load todos. Please try again.';
+        this.isLoading = false;
+      }
     });
   }
 
@@ -37,7 +46,8 @@ export class TodoComponent implements OnInit {
       next: (todo) => {
         this.todos.push(todo);
         this.newTodoTitle = '';
-      }
+      },
+      error: () => this.error = 'Failed to create todo.'
     });
   }
 
@@ -53,7 +63,8 @@ export class TodoComponent implements OnInit {
         const index = this.todos.findIndex(t => t.id === updated.id);
         this.todos[index] = updated;
         this.editingTodo = null;
-      }
+      },
+      error: () => this.error = 'Failed to update todo.'
     });
   }
 
@@ -62,13 +73,15 @@ export class TodoComponent implements OnInit {
       next: (updated) => {
         const index = this.todos.findIndex(t => t.id === updated.id);
         this.todos[index] = updated;
-      }
+      },
+      error: () => this.error = 'Failed to complete todo.'
     });
   }
 
   deleteTodo(id: number): void {
     this.todoService.delete(id).subscribe({
-      next: () => this.todos = this.todos.filter(t => t.id !== id)
+      next: () => this.todos = this.todos.filter(t => t.id !== id),
+      error: () => this.error = 'Failed to delete todo.'
     });
   }
 

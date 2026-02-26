@@ -4,12 +4,21 @@
     <button class="logout-btn" (click)="logout()">Logout</button>
   </div>
 
+  <!-- Error message -->
+  <div *ngIf="error" class="error">{{ error }}</div>
+
   <div class="add-todo">
     <input type="text" placeholder="Add a new todo..." [(ngModel)]="newTodoTitle" (keyup.enter)="createTodo()" />
     <button (click)="createTodo()">Add</button>
   </div>
 
-  <div class="todo-list">
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="spinner-container">
+    <div class="spinner"></div>
+    <p>Loading todos...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="todo-list">
     <div *ngFor="let todo of todos" class="todo-item" [class.completed]="todo.completed">
       <div *ngIf="editingTodo?.id !== todo.id" class="todo-content">
         <span>{{ todo.title }}</span>
